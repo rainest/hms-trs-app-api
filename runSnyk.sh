@@ -1,6 +1,7 @@
+#! /bin/bash
 # MIT License
 #
-# (C) Copyright [2020-2021] Hewlett Packard Enterprise Development LP
+# (C) Copyright [2021] Hewlett Packard Enterprise Development LP
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
@@ -20,10 +21,27 @@
 # ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
 
-# Dockerfile for testing base HMS TRS App API code.
+SNYK_OPTS="--dev --show-vulnerable-paths=all --fail-on=all --severity-threshold=${SEVERITY:-high} --skip-unresolved=true --org=hpe-cray-playground --json"
 
-FROM cray/hms-trs-app-api-build-base
+OUT=$(set -x; snyk test --all-projects --detection-depth=999 $SNYK_OPTS)
 
-# Run any tests that might be present.
-RUN set -ex \
-    && go test -v $GOPATH/src/stash.us.cray.com/HMS/hms-trs-app-api/pkg/./...
+PROJ_CHECK=OK
+jq .[].ok <<<"$OUT" | grep -q false && PROJ_CHECK=FAIL
+
+echo Snyk project check: $PROJ_CHECK
+
+DOCKER_CHECK=
+if [ -f Dockerfile ]; then
+    DOCKER_IMAGE=${PWD/*\//}:$(cat .version)
+    docker build --tag $DOCKER_IMAGE .
+    OUT=$(set -x; snyk test --docker $DOCKER_IMAGE --file=${PWD}/Dockerfile $SNYK_OPTS)
+    DOCKER_CHECK=OK
+    jq .ok <<<"$OUT" | grep -q false && DOCKER_CHECK=FAIL
+fi
+
+echo
+echo Snyk project check: $PROJ_CHECK
+echo Snyk docker check: $DOCKER_CHECK
+
+test "$PROJ_CHECK" == OK -a "$DOCKER_CHECK" == OK
+exit $?

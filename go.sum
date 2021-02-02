@@ -39,6 +39,8 @@ github.com/klauspost/compress v1.8.2 h1:Bx0qjetmNjdFXASH02NSAREKpiaDwkO1DRZ3dV2K
 github.com/klauspost/compress v1.8.2/go.mod h1:RyIbtBH6LamlWaDj8nUwkbUhJ87Yi3uG0guNDohfE1A=
 github.com/klauspost/cpuid v1.2.2 h1:1xAgYebNnsb9LKCdLOvFWtAxGU/33mjJtyOVbmUa0Us=
 github.com/klauspost/cpuid v1.2.2/go.mod h1:Pj4uuM528wm8OyEC2QMXAi2YiTZ96dNQPGgoMS4s3ek=
+github.com/klauspost/cpuid v1.3.1 h1:5JNjFYYQrZeKRJ0734q51WCEEn2huer72Dc7K+R/b6s=
+github.com/klauspost/cpuid v1.3.1/go.mod h1:bYW4mA6ZgKPob1/Dlai2LviZJO7KGI3uoWLd42rAQw4=
 github.com/konsorten/go-windows-terminal-sequences v1.0.1 h1:mweAR1A6xJ3oS2pRaGiHgQ4OO8tzTaLawm8vnODuwDk=
 github.com/konsorten/go-windows-terminal-sequences v1.0.1/go.mod h1:T0+1ngSBFLxvqU3pZ+m/2kptfBszLMUkC4ZK/EgS/cQ=
 github.com/kr/pretty v0.1.0 h1:L/CwN0zerZDmRFUapSPitk6f+Q3+0za1rQkzVuMiMFI=
@@ -85,5 +87,5 @@ gopkg.in/jcmturner/rpc.v1 v1.1.0 h1:QHIUxTX1ISuAv9dD2wJ9HWQVuWDX/Zc0PfeC2tjc4rU=
 gopkg.in/jcmturner/rpc.v1 v1.1.0/go.mod h1:YIdkC4XfD6GXbzje11McwsDuOlZQSb9W4vfLvuNnlv8=
 stash.us.cray.com/HMS/hms-base v1.11.1 h1:PKAA2vVxmfRk4AnIkQ8+Y4zdDpJPIfsu41xLDDb3mR4=
 stash.us.cray.com/HMS/hms-base v1.11.1/go.mod h1:2bT2ZeXBgXsrIsAtw0P6ILlTNilgOzzpJ/1NV545Tl0=
-stash.us.cray.com/HMS/hms-trs-kafkalib v1.2.2 h1:ZfplFO9LF1uH/XvnFEV11MDE+qy2lT2aLpTpbUKBmLQ=
-stash.us.cray.com/HMS/hms-trs-kafkalib v1.2.2/go.mod h1:mRVX41+rV1PqToi6tPJp52OvseeAUoCrwU4qo1Fauy4=
+stash.us.cray.com/HMS/hms-trs-kafkalib v1.4.0 h1:9rOfEbKr62dO5SS1nxFm6YTgp79z3O/UAnhW9+Uh9CM=
+stash.us.cray.com/HMS/hms-trs-kafkalib v1.4.0/go.mod h1:mRVX41+rV1PqToi6tPJp52OvseeAUoCrwU4qo1Fauy4=
