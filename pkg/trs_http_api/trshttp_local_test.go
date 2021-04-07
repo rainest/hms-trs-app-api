@@ -106,6 +106,16 @@ func launchHandler(w http.ResponseWriter, req *http.Request) {
 	w.Write([]byte(`{"Message":"OK"}`))
 }
 
+var stallCancel chan bool
+
+func stallHandler(w http.ResponseWriter, req *http.Request) {
+	<-stallCancel
+	w.Header().Set("Content-Type","application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(`{"Message":"OK"}`))
+}
+
+
 func TestLaunch(t *testing.T) {
 	tloc := &TRSHTTPLocal{}
 	tloc.Init(svcName,nil)
@@ -143,6 +153,49 @@ func TestLaunch(t *testing.T) {
 				t.Errorf("Launch chan returned error: %v",*tdone.Err)
 			}
 		}
+		running, err := tloc.Check(&tList)
+		if (err != nil) {
+			t.Errorf("ERROR with Check(): %v",err)
+		}
+		if (nDone == len(tList)) {
+			if (running) {
+				t.Errorf("ERROR, Check() says still running, but all tasks returned.")
+			}
+			break
+		}
+	}
+
+	if (nErr != 0) {
+		t.Errorf("Got %d errors from Launch",nErr)
+	}
+}
+
+func TestLaunchTimeout(t *testing.T) {
+	tloc := &TRSHTTPLocal{}
+	tloc.Init(svcName,nil)
+	srv := httptest.NewServer(http.HandlerFunc(stallHandler))
+	defer srv.Close()
+
+	req,_ := http.NewRequest("GET",srv.URL,nil)
+	tproto := HttpTask{Request: req, Timeout: 3*time.Second, RetryPolicy: RetryPolicy{Retries: 1, BackoffTimeout: 1 * time.Second,},}
+	tList := tloc.CreateTaskList(&tproto,1)
+	stallCancel = make(chan bool, 1)
+
+	tch,err := tloc.Launch(&tList)
+	if (err != nil) {
+		t.Errorf("Launch ERROR: %v",err)
+	}
+	time.Sleep(100 * time.Millisecond)
+
+	nDone := 0
+	nErr := 0
+	for {
+		tdone := <-tch
+		nDone ++
+		if (tdone == nil) {
+			t.Errorf("Launch chan returned nil ptr.")
+		}
+		stallCancel <- true
 		running, err := tloc.Check(&tList)
 		if (err != nil) {
 			t.Errorf("ERROR with Check(): %v",err)
