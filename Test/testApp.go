@@ -30,7 +30,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
-	trsapi "stash.us.cray.com/HMS/hms-trs-app-api/pkg/trs_http_api"
+	trsapi "github.com/Cray-HPE/hms-trs-app-api/pkg/trs_http_api"
 	"strconv"
 	"strings"
 	"time"

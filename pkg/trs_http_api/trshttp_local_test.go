@@ -24,7 +24,7 @@
 package trs_http_api
 
 import (
-	"stash.us.cray.com/HMS/hms-base"
+	"github.com/Cray-HPE/hms-base"
 	"testing"
 	"time"
 	"net/http"

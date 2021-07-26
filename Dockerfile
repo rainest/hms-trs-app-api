@@ -35,11 +35,11 @@ FROM build-base AS base
 
 RUN go env -w GO111MODULE=auto
 
-COPY pkg $GOPATH/src/stash.us.cray.com/HMS/hms-trs-app-api/pkg
-COPY vendor $GOPATH/src/stash.us.cray.com/HMS/hms-trs-app-api/vendor
+COPY pkg $GOPATH/src/github.com/Cray-HPE/hms-trs-app-api/pkg
+COPY vendor $GOPATH/src/github.com/Cray-HPE/hms-trs-app-api/vendor
 
 # Now we can build.
 FROM base
 
 RUN set -ex \
-    && go build -v stash.us.cray.com/HMS/hms-trs-app-api/pkg/./...
+    && go build -v github.com/Cray-HPE/hms-trs-app-api/pkg/./...
