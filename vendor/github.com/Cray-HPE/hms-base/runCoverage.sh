@@ -1,6 +1,7 @@
+#!/usr/bin/env bash
 # MIT License
 #
-# (C) Copyright [2020-2021] Hewlett Packard Enterprise Development LP
+# (C) Copyright [2021] Hewlett Packard Enterprise Development LP
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
@@ -20,20 +21,7 @@
 # ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
 
-# Dockerfile for creating a base image that can be used
-# for other images to do testing, coverage, and building.
+# Build the build base image
+docker build -t cray/hms-base-build-base -f Dockerfile.build-base .
 
-# Build base just has the packages installed we need.
-FROM arti.dev.cray.com/baseos-docker-master-local/golang:1.16-alpine3.13 AS build-base
-
-RUN set -ex \
-    && apk update \
-    && apk add build-base
-
-# Copy the files in for the next stages to use.
-FROM build-base
-
-RUN go env -w GO111MODULE=auto
-
-COPY pkg $GOPATH/src/github.com/Cray-HPE/hms-trs-app-api/pkg
-COPY vendor $GOPATH/src/github.com/Cray-HPE/hms-trs-app-api/vendor
+docker build -t cray/hms-base-coverage -f Dockerfile.coverage .
