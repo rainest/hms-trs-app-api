@@ -1,6 +1,6 @@
 // MIT License
 //
-// (C) Copyright [2020-2021] Hewlett Packard Enterprise Development LP
+// (C) Copyright [2020-2022] Hewlett Packard Enterprise Development LP
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
@@ -26,11 +26,11 @@ import (
 	"context"
 	"crypto/tls"
 	"crypto/x509"
-	"github.com/Shopify/sarama"
+	"github.com/confluentinc/confluent-kafka-go/kafka"
 	"github.com/google/uuid"
 	"github.com/hashicorp/go-retryablehttp"
 	"github.com/sirupsen/logrus"
-	tkafka "github.com/Cray-HPE/hms-trs-kafkalib/pkg/trs-kafkalib"
+	tkafka "github.com/Cray-HPE/hms-trs-kafkalib/v2/pkg/trs-kafkalib"
 	"sync"
 	"time"
 )
@@ -100,7 +100,7 @@ type TRSHTTPRemote struct {
 	ctx           context.Context
 	ctxCancelFunc context.CancelFunc
 	taskMap       map[uuid.UUID]*taskChannelTuple
-	kafkaRspChan  chan *sarama.ConsumerMessage
+	kafkaRspChan  chan *kafka.Message
 	KafkaInstance *tkafka.TRSKafka
 	sendTopic     string
 	receiveTopics []string

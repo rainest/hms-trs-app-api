@@ -1,6 +1,6 @@
 # MIT License
 #
-# (C) Copyright [2020-2021] Hewlett Packard Enterprise Development LP
+# (C) Copyright [2020-2022] Hewlett Packard Enterprise Development LP
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
@@ -26,4 +26,4 @@ FROM cray/hms-trs-app-api-build-base
 
 # Run any tests that might be present.
 RUN set -ex \
-    && go test -v $GOPATH/src/github.com/Cray-HPE/hms-trs-app-api/pkg/./...
+    && go test -v -tags musl $GOPATH/src/github.com/Cray-HPE/hms-trs-app-api/v2/pkg/./...
