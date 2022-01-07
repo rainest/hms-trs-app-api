@@ -1,6 +1,6 @@
 # MIT License
 #
-# (C) Copyright [2020-2021] Hewlett Packard Enterprise Development LP
+# (C) Copyright [2020-2022] Hewlett Packard Enterprise Development LP
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
@@ -35,11 +35,11 @@ FROM build-base AS base
 
 RUN go env -w GO111MODULE=auto
 
-COPY pkg $GOPATH/src/github.com/Cray-HPE/hms-trs-app-api/pkg
+COPY pkg $GOPATH/src/github.com/Cray-HPE/hms-trs-app-api/v2/pkg
 COPY vendor $GOPATH/src/github.com/Cray-HPE/hms-trs-app-api/vendor
 
 # Now we can build.
 FROM base
 
 RUN set -ex \
-    && go build -v github.com/Cray-HPE/hms-trs-app-api/pkg/./...
+    && go build -v -tags musl github.com/Cray-HPE/hms-trs-app-api/v2/pkg/./...
