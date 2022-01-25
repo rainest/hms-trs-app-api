@@ -1,6 +1,7 @@
+#
 # MIT License
 #
-# (C) Copyright [2020-2022] Hewlett Packard Enterprise Development LP
+# (C) Copyright 2022 Hewlett Packard Enterprise Development LP
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
@@ -19,11 +20,11 @@
 # OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 # ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
-
-# Dockerfile for running testing coverage on base HMS TRS App API code.
-
-FROM cray/hms-trs-app-api-build-base
-
-# Run coverage.
-RUN set -ex \
-    && go test -cover -v -tags musl github.com/Cray-HPE/hms-trs-app-api/v2/pkg/./...
+#
+name: Run Unit Tests
+on: [push, pull_request]
+jobs:
+  run_unit_test:
+    uses: Cray-HPE/hms-build-scripts/.github/workflows/run_unit_test.yaml@master
+    with:
+      runs-on: ubuntu-latest
