@@ -1,3 +1,11 @@
 .idea/
 go_build_testApp_go
 testApp
+
+# Prevent certificates from getting checked in
+*.ca
+*.cer
+*.crt
+*.csr
+*.key
+*.pem
