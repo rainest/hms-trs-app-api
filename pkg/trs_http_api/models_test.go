@@ -1,6 +1,6 @@
 // MIT License
 //
-// (C) Copyright [2021] Hewlett Packard Enterprise Development LP
+// (C) Copyright [2021,2024] Hewlett Packard Enterprise Development LP
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
@@ -23,11 +23,12 @@
 package trs_http_api
 
 import (
-	"github.com/google/uuid"
-	"github.com/stretchr/testify/suite"
 	"net/http"
 	"testing"
 	"time"
+
+	"github.com/google/uuid"
+	"github.com/stretchr/testify/suite"
 )
 
 type ModelsTS struct {
@@ -43,7 +44,7 @@ func GenerateStockHttpTask() (ht HttpTask) {
 		TimeStamp:     time.Now().String(),
 		Err:           nil,
 		Timeout:       0,
-		RetryPolicy:   RetryPolicy{},
+		CPolicy:       ClientPolicy{},
 		context:       nil,
 		contextCancel: nil,
 	}

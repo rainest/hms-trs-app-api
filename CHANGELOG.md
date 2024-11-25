@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.0] - 2024-11-25
+
+### Fixed
+
+- TRS now supports configuration of connection counts and timeouts by callers
+- TRS no longer closes all idle connections when http or contexts time out
+- TRS no longer closes all idle connections when request retry limits are reached
+- Reworked several sections of code for clarity and reduced code duplication
+- Fixed bug where contexts were never being cancelled which lead to resource leaks
+- Fixed bug to prevent 2nd request if 1st request's context timed out or canceled
+- Additional tracing added for debug purposes
+- Unit tests: Now run in verbose mode so failures are more easily analyzed
+- Unit tests: Enabled TRS logging from inside unit tests
+- Unit tests: Error signature changed to make identifying errors easier
+- Unit tests: Reworked some existing unit tests
+- Unit tests: Numerous unit tests added to test connection states
+- Update required version of Go to 1.23 to avoid
+  https://github.com/golang/go/issues/59017
+
 ## [2.1.1] - 2024-10-31
 
 ### Fixed
