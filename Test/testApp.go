@@ -54,11 +54,9 @@ func main() {
 
 	var source trsapi.HttpTask
 
-
 	var envstr string
 	var tloc trsapi.TrsAPI
 	//var worker interface{}
-
 
 	deadline := 10
 	numops := 2
@@ -76,7 +74,6 @@ func main() {
 		worker.Logger = logy
 		tloc = worker
 	}
-
 
 	envstr = os.Getenv("DEADLINE")
 	if envstr != "" {
@@ -131,12 +128,7 @@ func main() {
 		default:
 			logrus.SetLevel(logrus.ErrorLevel)
 		}
-
-		//Set the kafka level to the same level.
-		logy.SetLevel(logrus.GetLevel())
 	}
-
-
 
 	source.Request, _ = http.NewRequest(opType, "http://www.example.org", nil)
 
@@ -149,16 +141,12 @@ func main() {
 		os.Exit(1)
 	}
 
-	// if its remote, then you can change the kafka verbo
-	//worker.KafkaInstance.Logger.SetLevel(logrus.TraceLevel)
-
 	taskArray := tloc.CreateTaskList(&source, numops)
 
 	for ii := 0; ii < numops; ii++ {
-			//TODO make this several types of things to try!
-			logrus.Trace(ii, taskArray[ii].GetID())
-			taskArray[ii].Request.URL, _ = url.Parse(fmt.Sprintf("http://www.example.org/v1/EP/%d", ii))
-
+		//TODO make this several types of things to try!
+		logrus.Trace(ii, taskArray[ii].GetID())
+		taskArray[ii].Request.URL, _ = url.Parse(fmt.Sprintf("http://www.example.org/v1/EP/%d", ii))
 
 	}
 	rchan, err := tloc.Launch(&taskArray)
@@ -226,15 +214,7 @@ func main() {
 		logrus.Printf("Check loop ran %d times, goterr: %t\n", ix, goterr)
 	}
 
-	//wait for the kafka bus to come back
-	tloc.Check(&taskArray)
-	time.Sleep(2 * time.Second)
-	tloc.Close(&taskArray)
-	time.Sleep(2 * time.Second)
 	tloc.Cleanup()
-	time.Sleep(2 * time.Second)
-
-
 
 	logrus.Printf("Goodbye")
 

@@ -29,12 +29,14 @@ import (
 	"sync"
 	"time"
 
-	tkafka "github.com/Cray-HPE/hms-trs-kafkalib/v2/pkg/trs-kafkalib"
-	"github.com/confluentinc/confluent-kafka-go/v2/kafka"
 	"github.com/google/uuid"
 	"github.com/hashicorp/go-retryablehttp"
 	"github.com/sirupsen/logrus"
 )
+
+// the following is the original comment from CSM's version of the library.
+// it's no longer wholly accurate because Kafka stuff has been ripped out,
+// because we don't want to use it and it causes weird ARM64 build problems.
 
 // Interface for TRS operations.  There will be 2 sets of interface methods --
 // one for local operations (no kafka or TRS workers) and one for worker
@@ -70,12 +72,12 @@ type TrsAPI interface {
 
 type TRSHTTPLocalSecurity struct {
 	CACertBundleData string
-	ClientCertData string
-	ClientKeyData string
+	ClientCertData   string
+	ClientKeyData    string
 }
 
 type clientPack struct {
-	secure *retryablehttp.Client
+	secure   *retryablehttp.Client
 	insecure *retryablehttp.Client
 }
 
@@ -89,23 +91,6 @@ type TRSHTTPLocal struct {
 	clientMap     map[ClientPolicy]*clientPack
 	clientMutex   sync.Mutex
 	taskMap       map[uuid.UUID]*taskChannelTuple
-	taskMutex     sync.Mutex
-}
-
-// Remote/worker operations
-
-type TRSHTTPRemote struct {
-	Logger        *logrus.Logger
-	svcName       string
-	brokerSpec    string
-	ctx           context.Context
-	ctxCancelFunc context.CancelFunc
-	taskMap       map[uuid.UUID]*taskChannelTuple
-	kafkaRspChan  chan *kafka.Message
-	KafkaInstance *tkafka.TRSKafka
-	sendTopic     string
-	receiveTopics []string
-	consumerGroup string
 	taskMutex     sync.Mutex
 }
 
