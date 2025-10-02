@@ -66,9 +66,8 @@ func main() {
 
 	envstr = os.Getenv("IMPLEMENTATION")
 	if envstr == "REMOTE" {
-		worker := &trsapi.TRSHTTPRemote{}
-		worker.Logger = logy
-		tloc = worker
+		logrus.Printf("REMOTE is not supported in this release.\n")
+		os.Exit(1)
 	} else {
 		worker := &trsapi.TRSHTTPLocal{}
 		worker.Logger = logy
@@ -107,7 +106,7 @@ func main() {
 	envstr = os.Getenv("LOG_LEVEL")
 	if envstr != "" {
 		logLevel := strings.ToUpper(envstr)
-		logrus.Infof("Setting log level to: %d\n", envstr)
+		logrus.Infof("Setting log level to: %s\n", envstr)
 
 		switch logLevel {
 
