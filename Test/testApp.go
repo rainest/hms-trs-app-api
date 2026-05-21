@@ -54,11 +54,9 @@ func main() {
 
 	var source trsapi.HttpTask
 
-
 	var envstr string
 	var tloc trsapi.TrsAPI
 	//var worker interface{}
-
 
 	deadline := 10
 	numops := 2
@@ -67,16 +65,9 @@ func main() {
 	useChan := false
 
 	envstr = os.Getenv("IMPLEMENTATION")
-	if envstr == "REMOTE" {
-		worker := &trsapi.TRSHTTPRemote{}
-		worker.Logger = logy
-		tloc = worker
-	} else {
-		worker := &trsapi.TRSHTTPLocal{}
-		worker.Logger = logy
-		tloc = worker
-	}
-
+	worker := &trsapi.TRSHTTPLocal{}
+	worker.Logger = logy
+	tloc = worker
 
 	envstr = os.Getenv("DEADLINE")
 	if envstr != "" {
@@ -110,7 +101,7 @@ func main() {
 	envstr = os.Getenv("LOG_LEVEL")
 	if envstr != "" {
 		logLevel := strings.ToUpper(envstr)
-		logrus.Infof("Setting log level to: %d\n", envstr)
+		logrus.Infof("Setting log level to: %s\n", envstr)
 
 		switch logLevel {
 
@@ -136,8 +127,6 @@ func main() {
 		logy.SetLevel(logrus.GetLevel())
 	}
 
-
-
 	source.Request, _ = http.NewRequest(opType, "http://www.example.org", nil)
 
 	source.Request.Method = opType
@@ -155,10 +144,9 @@ func main() {
 	taskArray := tloc.CreateTaskList(&source, numops)
 
 	for ii := 0; ii < numops; ii++ {
-			//TODO make this several types of things to try!
-			logrus.Trace(ii, taskArray[ii].GetID())
-			taskArray[ii].Request.URL, _ = url.Parse(fmt.Sprintf("http://www.example.org/v1/EP/%d", ii))
-
+		//TODO make this several types of things to try!
+		logrus.Trace(ii, taskArray[ii].GetID())
+		taskArray[ii].Request.URL, _ = url.Parse(fmt.Sprintf("http://www.example.org/v1/EP/%d", ii))
 
 	}
 	rchan, err := tloc.Launch(&taskArray)
@@ -233,8 +221,6 @@ func main() {
 	time.Sleep(2 * time.Second)
 	tloc.Cleanup()
 	time.Sleep(2 * time.Second)
-
-
 
 	logrus.Printf("Goodbye")
 

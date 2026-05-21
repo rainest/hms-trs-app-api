@@ -29,28 +29,14 @@ import (
 	"sync"
 	"time"
 
-	tkafka "github.com/Cray-HPE/hms-trs-kafkalib/v2/pkg/trs-kafkalib"
-	"github.com/confluentinc/confluent-kafka-go/v2/kafka"
 	"github.com/google/uuid"
 	"github.com/hashicorp/go-retryablehttp"
 	"github.com/sirupsen/logrus"
 )
 
-// Interface for TRS operations.  There will be 2 sets of interface methods --
-// one for local operations (no kafka or TRS workers) and one for worker
-// mode (uses Kafka/TRS workers).
-//
-// Note the lack of Kafka topic specifications in any of the interface funcs.
-// This is intentional -- using the local or remote variants of the interface
-// shouldn't make the code any different at all.   If using the remote/worker
-// variant, the Kafka topics are calculated based on service name, sender id,
-// and send/receive.   This is all done under the covers, but will be
-// predictable enough for debugging.
-//
-// If for whatever reason an application wants a different return topic, it
-// can specify it in the source descriptor in CreateTaskArray.  This is
-// hacky, but using a different return topic is somewhat bypassing the
-// intended use model of this API anyway.
+// Interface for TRS operations.
+
+// Once there was Kafka stuff here, and now it is banished to the shadow realm, for it was never used.
 
 //var TrsAPIContext TrsAPI
 
@@ -70,12 +56,12 @@ type TrsAPI interface {
 
 type TRSHTTPLocalSecurity struct {
 	CACertBundleData string
-	ClientCertData string
-	ClientKeyData string
+	ClientCertData   string
+	ClientKeyData    string
 }
 
 type clientPack struct {
-	secure *retryablehttp.Client
+	secure   *retryablehttp.Client
 	insecure *retryablehttp.Client
 }
 
@@ -89,23 +75,6 @@ type TRSHTTPLocal struct {
 	clientMap     map[ClientPolicy]*clientPack
 	clientMutex   sync.Mutex
 	taskMap       map[uuid.UUID]*taskChannelTuple
-	taskMutex     sync.Mutex
-}
-
-// Remote/worker operations
-
-type TRSHTTPRemote struct {
-	Logger        *logrus.Logger
-	svcName       string
-	brokerSpec    string
-	ctx           context.Context
-	ctxCancelFunc context.CancelFunc
-	taskMap       map[uuid.UUID]*taskChannelTuple
-	kafkaRspChan  chan *kafka.Message
-	KafkaInstance *tkafka.TRSKafka
-	sendTopic     string
-	receiveTopics []string
-	consumerGroup string
 	taskMutex     sync.Mutex
 }
 
